@@ -1,5 +1,7 @@
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -48,17 +50,49 @@ public class GUI extends JFrame {
         // add(text01);
 
         //adds french bulldog image
-        JLabel dogTie = new JLabel();
-        dogTie.setIcon(loadImage("funny-french-bulldog-puppy-maika-777.jpg"));
-        randomImagePos(dogTie);
-        dogTie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        add(dogTie);
+        JLabel dog01 = new JLabel();
+        dog01.setIcon(loadImage(generateRandomImage()));
+        randomImagePos(dog01);
+        dog01.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        add(dog01);
 
         //bounce button
         JButton bounceButton = new JButton("Bounce!");
         bounceButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         bounceButton.setBounds(10, 10, 90, 30);
         add(bounceButton);
+
+        //add button
+        JLabel dog02 = new JLabel();
+        JButton addImageButton = new JButton();
+        addImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        addImageButton.setBounds(150, 10, 30, 30);
+        addImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dog02.setIcon(loadImage(generateRandomImage()));
+                randomImagePos(dog02);
+                add(dog02);
+                revalidate();
+                repaint();
+            }
+        });
+        add(addImageButton);
+
+         //reloads images
+         JButton reloadImageButton = new JButton();
+         reloadImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         reloadImageButton.setBounds(110, 10, 30, 30);
+         reloadImageButton.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 randomImagePos(dog01);
+                 dog01.setIcon(loadImage(generateRandomImage()));
+                 randomImagePos(dog02);
+                 dog02.setIcon(loadImage(generateRandomImage()));
+             }
+         });
+         add(reloadImageButton);
 
         
     }
@@ -94,7 +128,7 @@ public class GUI extends JFrame {
         Random random = new Random();
         int x = random.nextInt(500) + 1;
         int y = random.nextInt(500) + 1;
-        while (x < 100 && y < 40) {
+        while (x < 150 && y < 40) {
             x = random.nextInt(500) + 1;
             y = random.nextInt(500) + 1;
         }
@@ -103,14 +137,35 @@ public class GUI extends JFrame {
 
     private String generateRandomImage() {
         Random random = new Random();
-        int randomImage = random.nextInt(5) + 1;
+        int randomImage = random.nextInt(7) + 1;
         switch(randomImage) {
-            case 1:
-            return
-
+            case 1: //Frenchie Frog
+            return "funny-french-bulldog-puppy-maika-777.jpg";
+            case 2: //Dog in tie
+            return "IMG_0070.jpg";
+            case 3: //Sly dog
+            return "url.jpg";
+            case 4: //Eyebrow dog
+            return "IMG_3010.jpg";
+            case 5: //Crying Chihuahua
+            return "IMG_3009.jpg";
+            case 6: //Moy dog
+            return "IMG_3005.jpg";
+            case 7: //Lightskin Pitbull
+            return "IMG_3008.jpg";
         }
         return null;
     }
 
 
 }
+
+
+
+
+//addImageButton:
+//Figure out a way to keep adding a new image every click
+//Figure out a way to keep images from stacking onto each other
+
+//bouncingImage:
+//Figure out a way to make images bounce
