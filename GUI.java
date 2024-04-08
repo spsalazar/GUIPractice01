@@ -101,8 +101,15 @@ public class GUI extends JFrame {
         image.setBounds(x, y, 200, 200);
     }
 
-    private void generateRandomImage() {
-        
+    private String generateRandomImage() {
+        Random random = new Random();
+        int randomImage = random.nextInt(5) + 1;
+        switch(randomImage) {
+            case 1:
+            return
+
+        }
+        return null;
     }
 
 
