@@ -64,7 +64,7 @@ public class GUI extends JFrame {
 
         //add button
         JLabel dog02 = new JLabel();
-        JButton addImageButton = new JButton();
+        JButton addImageButton = new JButton("+");
         addImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addImageButton.setBounds(150, 10, 30, 30);
         addImageButton.addActionListener(new ActionListener() {
@@ -78,6 +78,20 @@ public class GUI extends JFrame {
             }
         });
         add(addImageButton);
+        
+        //remove button
+        JButton removeImageButton = new JButton("-");
+        removeImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        removeImageButton.setBounds(190, 10, 30, 30);
+        removeImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                remove(dog02);
+                revalidate();
+                repaint();
+            }
+        });
+        add(removeImageButton);
 
          //reloads images
          JButton reloadImageButton = new JButton();
