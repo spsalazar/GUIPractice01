@@ -180,6 +180,10 @@ public class GUI extends JFrame {
 //addImageButton:
 //Figure out a way to keep adding a new image every click
 //Figure out a way to keep images from stacking onto each other
+//Figure out a way to stop image from resetting its position
 
 //bouncingImage:
 //Figure out a way to make images bounce
+
+//removeImageButton:
+//Figure out a way to remove both images
