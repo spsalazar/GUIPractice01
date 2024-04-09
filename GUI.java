@@ -68,10 +68,15 @@ public class GUI extends JFrame {
         addImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addImageButton.setBounds(150, 10, 30, 30);
         addImageButton.addActionListener(new ActionListener() {
+            boolean pressedOnce = false;
             @Override
             public void actionPerformed(ActionEvent e) {
                 dog02.setIcon(loadImage(generateRandomImage()));
-                randomImagePos(dog02);
+                while (pressedOnce != true) {
+                    randomImagePos(dog02);
+                    pressedOnce = true;
+                }
+                // randomImagePos(dog02);
                 add(dog02);
                 revalidate();
                 repaint();
