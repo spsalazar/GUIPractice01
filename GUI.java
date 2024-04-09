@@ -76,7 +76,6 @@ public class GUI extends JFrame {
                     randomImagePos(dog02);
                     pressedOnce = true;
                 }
-                // randomImagePos(dog02);
                 add(dog02);
                 revalidate();
                 repaint();
@@ -147,7 +146,7 @@ public class GUI extends JFrame {
         Random random = new Random();
         int x = random.nextInt(500) + 1;
         int y = random.nextInt(500) + 1;
-        while (x < 150 && y < 40) {
+        while (x < 190 && y < 40) {
             x = random.nextInt(500) + 1;
             y = random.nextInt(500) + 1;
         }
