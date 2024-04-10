@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class GUI extends JFrame {
+
+    JLabel newDog = null;
+    int dogCount = 0;
     
     public GUI() {
         //title
@@ -43,11 +47,6 @@ public class GUI extends JFrame {
     }
 
     private void GUIComponents() {
-        //Hello Friend text
-        // JLabel text01 = new JLabel("Hello friend");
-        // text01.setBounds(5, 5, 400, 45);
-        // text01.setFont(new Font("Droid Sans Hebrew", Font.PLAIN, 24));
-        // add(text01);
 
         //adds french bulldog image
         JLabel dog01 = new JLabel();
@@ -56,6 +55,14 @@ public class GUI extends JFrame {
         dog01.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         add(dog01);
 
+          //count Text
+          JButton countText = new JButton("1");
+          countText.setBounds(179, 10, 62, 30);
+          countText.setFont(new Font("Droid Sans Hebrew", Font.PLAIN, 20));
+          countText.setEnabled(false);
+          countText.setBackground(Color.WHITE);
+          add(countText);
+
         //bounce button
         JButton bounceButton = new JButton("Bounce!");
         bounceButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -63,7 +70,6 @@ public class GUI extends JFrame {
         add(bounceButton);
 
         //add button
-        JLabel dog02 = new JLabel();
         JButton addImageButton = new JButton("+");
         addImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         addImageButton.setBounds(150, 10, 30, 30);
@@ -71,14 +77,17 @@ public class GUI extends JFrame {
             boolean pressedOnce = false;
             @Override
             public void actionPerformed(ActionEvent e) {
-                dog02.setIcon(loadImage(generateRandomImage()));
-                while (pressedOnce != true) {
-                    randomImagePos(dog02);
-                    pressedOnce = true;
-                }
-                add(dog02);
-                revalidate();
-                repaint();
+                
+                    newDog = new JLabel();
+                    newDog.setIcon(loadImage(generateRandomImage()));
+                    randomImagePos(newDog);
+                    add(newDog);
+                    revalidate();
+                    repaint();
+                   dogCount++;
+                   countText.setText(Integer.toString(dogCount));
+                   pressedOnce = true;
+                
             }
         });
         add(addImageButton);
@@ -86,13 +95,18 @@ public class GUI extends JFrame {
         //remove button
         JButton removeImageButton = new JButton("-");
         removeImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        removeImageButton.setBounds(190, 10, 30, 30);
+        removeImageButton.setBounds(240, 10, 30, 30);
         removeImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                remove(dog02);
-                revalidate();
-                repaint();
+                if (newDog != null) {
+                    remove(newDog);
+                    revalidate();
+                    repaint();
+                    dogCount--;
+                    countText.setText(Integer.toString(dogCount));
+                    newDog = null;
+                }
             }
         });
         add(removeImageButton);
@@ -106,11 +120,12 @@ public class GUI extends JFrame {
              public void actionPerformed(ActionEvent e) {
                  randomImagePos(dog01);
                  dog01.setIcon(loadImage(generateRandomImage()));
-                 randomImagePos(dog02);
-                 dog02.setIcon(loadImage(generateRandomImage()));
+                 randomImagePos(newDog);
+                 newDog.setIcon(loadImage(generateRandomImage()));
              }
          });
          add(reloadImageButton);
+
 
         
     }
@@ -191,3 +206,5 @@ public class GUI extends JFrame {
 
 //removeImageButton:
 //Figure out a way to remove both images
+
+//fix bugs on add and remove image buttons
