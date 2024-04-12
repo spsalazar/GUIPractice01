@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //sets GUI size
-        setSize(700, 700);
+        setSize(800, 800);
 
         //loads gui at the center of the screen
         setLocationRelativeTo(null);
@@ -47,16 +48,8 @@ public class GUI extends JFrame {
     }
 
     private void GUIComponents() {
-
-        //adds french bulldog image
-        JLabel dog01 = new JLabel();
-        dog01.setIcon(loadImage(generateRandomImage()));
-        randomImagePos(dog01);
-        dog01.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        add(dog01);
-
           //count Text
-          JButton countText = new JButton("1");
+          JButton countText = new JButton("0");
           countText.setBounds(179, 10, 62, 30);
           countText.setFont(new Font("Droid Sans Hebrew", Font.PLAIN, 20));
           countText.setEnabled(false);
@@ -68,6 +61,12 @@ public class GUI extends JFrame {
         bounceButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         bounceButton.setBounds(10, 10, 90, 30);
         add(bounceButton);
+
+        //remove button
+        JButton removeImageButton = new JButton("-");
+        removeImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        removeImageButton.setBounds(240, 10, 30, 30);
+        removeImageButton.setEnabled(false);
 
         //add button
         JButton addImageButton = new JButton("+");
@@ -87,28 +86,39 @@ public class GUI extends JFrame {
                    dogCount++;
                    countText.setText(Integer.toString(dogCount));
                    pressedOnce = true;
-                
+                   if (dogCount == 5) {
+                    addImageButton.setEnabled(false);
+                   }
+                   // Enables remove button
+                   removeImageButton.setEnabled(true);
             }
         });
         add(addImageButton);
         
-        //remove button
-        JButton removeImageButton = new JButton("-");
-        removeImageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        removeImageButton.setBounds(240, 10, 30, 30);
+        //removeButton actions
         removeImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (newDog != null) {
-                    remove(newDog);
-                    revalidate();
-                    repaint();
-                    dogCount--;
-                    countText.setText(Integer.toString(dogCount));
-                    newDog = null;
+                //adds all components(images) to the JFrame
+                Component[] components = getContentPane().getComponents();
+                for (int i = 0; i < components.length; i++) {
+                    //Check if the component is a JLabel representing a dog image
+                    Component component = components[i];
+                    if (component instanceof JLabel) {
+                        remove(component);
+                        dogCount--;
+                        countText.setText(Integer.toString(dogCount));
+                        removeImageButton.setEnabled(dogCount > 0);
+                        //Enables add button
+                        addImageButton.setEnabled(dogCount < 5);
+                        break;
+                    }
                 }
+                revalidate();
+                repaint();
             }
         });
+        removeImageButton.setEnabled(false);
         add(removeImageButton);
 
          //reloads images
@@ -118,15 +128,18 @@ public class GUI extends JFrame {
          reloadImageButton.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                 randomImagePos(dog01);
-                 dog01.setIcon(loadImage(generateRandomImage()));
-                 randomImagePos(newDog);
-                 newDog.setIcon(loadImage(generateRandomImage()));
+                Component[] components = getContentPane().getComponents();
+                for (int i = 0; i < components.length; i++) {
+                    Component component = components[i];
+                    if (component instanceof JLabel) {
+                        JLabel label = (JLabel) component;
+                        randomImagePos(label);
+                        label.setIcon(loadImage(generateRandomImage()));
+                    }
+                }
              }
          });
          add(reloadImageButton);
-
-
         
     }
 
@@ -149,8 +162,8 @@ public class GUI extends JFrame {
         int xSpeed = 3;
         int ySpeed = 3;
         while (true) {
-        int x = random.nextInt(500) + 1;
-        int y = random.nextInt(500) + 1;
+        int x = random.nextInt(600) + 1;
+        int y = random.nextInt(600) + 1;
         image.setBounds(x, y, 200, 200);
         x += xSpeed;
         y += ySpeed;
@@ -159,11 +172,11 @@ public class GUI extends JFrame {
 
     private void randomImagePos(JLabel image) {
         Random random = new Random();
-        int x = random.nextInt(500) + 1;
-        int y = random.nextInt(500) + 1;
+        int x = random.nextInt(600) + 1;
+        int y = random.nextInt(600) + 1;
         while (x < 190 && y < 40) {
-            x = random.nextInt(500) + 1;
-            y = random.nextInt(500) + 1;
+            x = random.nextInt(600) + 1;
+            y = random.nextInt(600) + 1;
         }
         image.setBounds(x, y, 200, 200);
     }
@@ -190,7 +203,6 @@ public class GUI extends JFrame {
         return null;
     }
 
-
 }
 
 
@@ -204,7 +216,5 @@ public class GUI extends JFrame {
 //bouncingImage:
 //Figure out a way to make images bounce
 
-//removeImageButton:
-//Figure out a way to remove both images
-
-//fix bugs on add and remove image buttons
+//generateRandomImage:
+//Figure out a way where all the other images are the same
