@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -19,6 +21,7 @@ public class GUI extends JFrame {
 
     JLabel newDog = null;
     int dogCount = 0;
+    List<String> usedImages = new ArrayList<>();
     
     public GUI() {
         //title
@@ -78,7 +81,8 @@ public class GUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 
                     newDog = new JLabel();
-                    newDog.setIcon(loadImage(generateRandomImage()));
+                    String randomImage = uniqueImage();
+                    newDog.setIcon(loadImage(randomImage));
                     randomImagePos(newDog);
                     add(newDog);
                     revalidate();
@@ -133,8 +137,9 @@ public class GUI extends JFrame {
                     Component component = components[i];
                     if (component instanceof JLabel) {
                         JLabel label = (JLabel) component;
+                        String randomImage = uniqueImage();
                         randomImagePos(label);
-                        label.setIcon(loadImage(generateRandomImage()));
+                        label.setIcon(loadImage(randomImage));
                     }
                 }
              }
@@ -203,6 +208,16 @@ public class GUI extends JFrame {
         return null;
     }
 
+    private String uniqueImage() {
+        Random random = new Random();
+        String randomImage;
+        do {
+            randomImage = generateRandomImage();
+        } while (usedImages.contains(randomImage));
+        usedImages.add(randomImage);
+        return randomImage;
+    }
+
 }
 
 
@@ -218,3 +233,5 @@ public class GUI extends JFrame {
 
 //generateRandomImage:
 //Figure out a way where all the other images are the same
+
+//Fix bug where it crashes after 7 unique images clicked
