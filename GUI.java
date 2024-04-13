@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 
 public class GUI extends JFrame {
 
@@ -188,7 +189,7 @@ public class GUI extends JFrame {
 
     private String generateRandomImage() {
         Random random = new Random();
-        int randomImage = random.nextInt(7) + 1;
+        int randomImage = random.nextInt(9) + 1;
         switch(randomImage) {
             case 1: //Frenchie Frog
             return "funny-french-bulldog-puppy-maika-777.jpg";
@@ -204,6 +205,10 @@ public class GUI extends JFrame {
             return "IMG_3005.jpg";
             case 7: //Lightskin Pitbull
             return "IMG_3008.jpg";
+            case 8: //Bat dog
+            return "BatDog.jpg";
+            case 9: //Shy dog
+            return "shy.png";
         }
         return null;
     }
@@ -213,25 +218,24 @@ public class GUI extends JFrame {
         String randomImage;
         do {
             randomImage = generateRandomImage();
+            if (usedImages.size() == 5) {
+                usedImages.clear();
+            }
         } while (usedImages.contains(randomImage));
         usedImages.add(randomImage);
         return randomImage;
     }
 
+    private void randomPosCheck() {
+        Component[] component = getContentPane().getComponents();
+
+    }
+
 }
 
-
-
-
 //addImageButton:
-//Figure out a way to keep adding a new image every click
 //Figure out a way to keep images from stacking onto each other
-//Figure out a way to stop image from resetting its position
 
 //bouncingImage:
 //Figure out a way to make images bounce
 
-//generateRandomImage:
-//Figure out a way where all the other images are the same
-
-//Fix bug where it crashes after 7 unique images clicked
