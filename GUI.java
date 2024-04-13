@@ -17,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 public class GUI extends JFrame {
 
@@ -146,6 +148,26 @@ public class GUI extends JFrame {
              }
          });
          add(reloadImageButton);
+
+         //menu button
+         JButton menuButton = new JButton();
+         menuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         menuButton.setBounds(740, 10, 30, 30);
+        
+         //stuff inside menu
+         JPopupMenu popupMenu = new JPopupMenu();
+         JMenuItem backgroundColor = new JMenuItem("Background");
+         JMenuItem muteSound = new JMenuItem("Mute");
+         popupMenu.add(backgroundColor);
+         popupMenu.add(muteSound);
+         menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                popupMenu.show(menuButton, -61, menuButton.getHeight());
+            }
+         });
+
+         add(menuButton);
         
     }
 
