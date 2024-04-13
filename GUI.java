@@ -157,7 +157,9 @@ public class GUI extends JFrame {
          //stuff inside menu
          JPopupMenu popupMenu = new JPopupMenu();
          JMenuItem backgroundColor = new JMenuItem("Background");
+         backgroundColor.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
          JMenuItem muteSound = new JMenuItem("Mute");
+         muteSound.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
          popupMenu.add(backgroundColor);
          popupMenu.add(muteSound);
          menuButton.addActionListener(new ActionListener() {
