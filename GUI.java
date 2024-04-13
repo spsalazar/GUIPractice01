@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -156,8 +155,22 @@ public class GUI extends JFrame {
         
          //stuff inside menu
          JPopupMenu popupMenu = new JPopupMenu();
-         JMenuItem backgroundColor = new JMenuItem("Background");
+         JMenuItem backgroundColor = new JMenuItem("Background Color");
          backgroundColor.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+         JPopupMenu colorSubmenu = new JPopupMenu();
+         colorSubmenu.add(new JMenuItem("Black"));
+         backgroundColor.add(colorSubmenu);
+
+        backgroundColor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                backgroundColor.add(colorSubmenu);
+                colorSubmenu.show(backgroundColor, backgroundColor.getWidth(), 0);
+            }
+        });
+        
+
          JMenuItem muteSound = new JMenuItem("Mute");
          muteSound.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
          popupMenu.add(backgroundColor);
@@ -165,7 +178,7 @@ public class GUI extends JFrame {
          menuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                popupMenu.show(menuButton, -61, menuButton.getHeight());
+                popupMenu.show(menuButton, -95, menuButton.getHeight());
             }
          });
 
