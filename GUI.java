@@ -89,6 +89,7 @@ public class GUI extends JFrame {
                     Point pos = randomImagePos(newDog);
                     newDog.setIcon(loadImage(randomImage));
                     newDog.setBounds(pos.x, pos.y, 200, 200);
+                    newDog.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     add(newDog);
                     revalidate();
                     repaint();
