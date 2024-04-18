@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,7 @@ public class GUI extends JFrame {
     JLabel newDog = null;
     int dogCount = 0;
     List<String> usedImages = new ArrayList<>();
+    List<Point> imagePositions = new ArrayList<>();
     
     public GUI() {
         //title
@@ -84,8 +86,9 @@ public class GUI extends JFrame {
                 
                     newDog = new JLabel();
                     String randomImage = uniqueImage();
+                    Point pos = randomImagePos(newDog);
                     newDog.setIcon(loadImage(randomImage));
-                    randomImagePos(newDog);
+                    newDog.setBounds(pos.x, pos.y, 200, 200);
                     add(newDog);
                     revalidate();
                     repaint();
@@ -140,49 +143,16 @@ public class GUI extends JFrame {
                     if (component instanceof JLabel) {
                         JLabel label = (JLabel) component;
                         String randomImage = uniqueImage();
-                        randomImagePos(label);
+                        Point pos = randomImagePos(label);
                         label.setIcon(loadImage(randomImage));
+                        label.setBounds(pos.x, pos.y, 200, 200);
                     }
                 }
              }
          });
          add(reloadImageButton);
 
-         //menu button
-         JButton menuButton = new JButton();
-         menuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-         menuButton.setBounds(740, 10, 30, 30);
-        
-         //stuff inside menu
-         JPopupMenu popupMenu = new JPopupMenu();
-         JMenuItem backgroundColor = new JMenuItem("Background Color");
-         backgroundColor.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-         JPopupMenu colorSubmenu = new JPopupMenu();
-         colorSubmenu.add(new JMenuItem("Black"));
-         backgroundColor.add(colorSubmenu);
-
-        backgroundColor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                backgroundColor.add(colorSubmenu);
-                colorSubmenu.show(backgroundColor, backgroundColor.getWidth(), 0);
-            }
-        });
-        
-
-         JMenuItem muteSound = new JMenuItem("Mute");
-         muteSound.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-         popupMenu.add(backgroundColor);
-         popupMenu.add(muteSound);
-         menuButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                popupMenu.show(menuButton, -95, menuButton.getHeight());
-            }
-         });
-
-         add(menuButton);
+         
         
     }
 
@@ -213,7 +183,7 @@ public class GUI extends JFrame {
         }
     }
 
-    private void randomImagePos(JLabel image) {
+    private Point randomImagePos(JLabel image) {
         Random random = new Random();
         int x = random.nextInt(600) + 1;
         int y = random.nextInt(600) + 1;
@@ -221,7 +191,9 @@ public class GUI extends JFrame {
             x = random.nextInt(600) + 1;
             y = random.nextInt(600) + 1;
         }
-        image.setBounds(x, y, 200, 200);
+        Point pos = new Point(x, y);
+        imagePositions.add(pos);
+        return pos;
     }
 
     private String generateRandomImage() {
@@ -263,11 +235,6 @@ public class GUI extends JFrame {
         return randomImage;
     }
 
-    private void randomPosCheck() {
-        Component[] component = getContentPane().getComponents();
-
-    }
-
 }
 
 //addImageButton:
@@ -276,3 +243,5 @@ public class GUI extends JFrame {
 //bouncingImage:
 //Figure out a way to make images bounce
 
+//randomImagePos:
+//Fix random position to stop overlapping images
