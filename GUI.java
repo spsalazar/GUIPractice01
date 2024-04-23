@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,6 +29,8 @@ public class GUI extends JFrame {
     int dogCount = 0;
     List<String> usedImages = new ArrayList<>();
     List<Point> imagePositions = new ArrayList<>();
+    List<Integer> addButtonClicks = new ArrayList<>();
+    List<Integer> reloadButtonClicks = new ArrayList<>();
     
     public GUI() {
         //title
@@ -35,7 +40,7 @@ public class GUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //sets GUI size
-        setSize(800, 800);
+        setSize(900, 900);
 
         //loads gui at the center of the screen
         setLocationRelativeTo(null);
@@ -101,10 +106,25 @@ public class GUI extends JFrame {
                    }
                    // Enables remove button
                    removeImageButton.setEnabled(true);
+                   playSound("DogBark.wav");
+
+                   //resets image positions
+                  addButtonClicks.add(1);
+                  if (addButtonClicks.size() == 5) {
+                    addButtonClicks.clear();
+                    imagePositions.clear();
+                  }
+                  if (reloadButtonClicks.size() == 1) {
+                    reloadButtonClicks.clear();
+                    addButtonClicks.clear();
+                    imagePositions.clear();
+                  }
+                  
             }
         });
         add(addImageButton);
-        
+
+
         //removeButton actions
         removeImageButton.addActionListener(new ActionListener() {
             @Override
@@ -126,6 +146,7 @@ public class GUI extends JFrame {
                 }
                 revalidate();
                 repaint();
+                playSound("DogRemove.wav");
             }
         });
         removeImageButton.setEnabled(false);
@@ -138,23 +159,10 @@ public class GUI extends JFrame {
          reloadImageButton.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent e) {
-                Component[] components = getContentPane().getComponents();
-                for (int i = 0; i < components.length; i++) {
-                    Component component = components[i];
-                    if (component instanceof JLabel) {
-                        JLabel label = (JLabel) component;
-                        String randomImage = uniqueImage();
-                        Point pos = randomImagePos(label);
-                        label.setIcon(loadImage(randomImage));
-                        label.setBounds(pos.x, pos.y, 200, 200);
-                    }
-                }
+                reloadButtonActions();
              }
          });
          add(reloadImageButton);
-
-         
-        
     }
 
     private ImageIcon loadImage(String image) {
@@ -169,15 +177,14 @@ public class GUI extends JFrame {
         return null;
     }
 
-
     //x pos, y pos, width, height
     private void bouncingImage(JLabel image) {
         Random random = new Random();
         int xSpeed = 3;
         int ySpeed = 3;
         while (true) {
-        int x = random.nextInt(600) + 1;
-        int y = random.nextInt(600) + 1;
+        int x = random.nextInt(1000) + 1;
+        int y = random.nextInt(800) + 1;
         image.setBounds(x, y, 200, 200);
         x += xSpeed;
         y += ySpeed;
@@ -186,16 +193,21 @@ public class GUI extends JFrame {
 
     private Point randomImagePos(JLabel image) {
         Random random = new Random();
-        int x = random.nextInt(600) + 1;
-        int y = random.nextInt(600) + 1;
+        int x = random.nextInt(700) + 1;
+        int y = random.nextInt(700) + 1;
         while (x < 190 && y < 40) {
-            x = random.nextInt(600) + 1;
-            y = random.nextInt(600) + 1;
+            x = random.nextInt(700) + 1;
+            y = random.nextInt(700) + 1;
         }
         Point pos = new Point(x, y);
+        while (overlapperChecker(imagePositions, pos, 300) || x < 190 && y < 40) {
+            x = random.nextInt(700) + 1;
+            y = random.nextInt(700) + 1;
+            pos.setLocation(x, y); //sets the location of the image
+        }
         imagePositions.add(pos);
         return pos;
-    }
+        }
 
     private String generateRandomImage() {
         Random random = new Random();
@@ -236,7 +248,46 @@ public class GUI extends JFrame {
         return randomImage;
     }
 
+    private static boolean overlapperChecker(List<Point> imagePositions2, Point point, int distance) {
+        for (int i = 0; i < imagePositions2.size(); i++) {
+            Point p = imagePositions2.get(i);
+            if (p.distance(point) < distance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void playSound(String soundName) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Error with playing sound: " + e.getMessage());
+        }
+    }
+
+    private void reloadButtonActions() {
+        imagePositions.clear();
+        addButtonClicks.clear();
+        reloadButtonClicks.add(1);
+        Component[] components = getContentPane().getComponents();
+        for (int i = 0; i < components.length; i++) {
+            Component component = components[i];
+            if (component instanceof JLabel) {
+                JLabel label = (JLabel) component;
+                String randomImage = uniqueImage();
+                Point pos = randomImagePos(label);
+                label.setIcon(loadImage(randomImage));
+                label.setBounds(pos.x, pos.y, 200, 200);
+                playSound("DogPant.wav");
+            }
+        }
+    }
 }
+
 
 //addImageButton:
 //Figure out a way to keep images from stacking onto each other
@@ -246,3 +297,6 @@ public class GUI extends JFrame {
 
 //randomImagePos:
 //Fix random position to stop overlapping images
+
+//Fix issue when this sequence happens:
+// Add Button is clicked 5 times, then reload button is clicked, then remove button is clicked 5 times, then add button is clicked, the prgoram crashes
