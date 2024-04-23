@@ -6,6 +6,10 @@ Update 1 (4/17/2024):
 * Added Point variable for images
 (Used to stop images from overlapping each other)
 
+Update 2 (4/22/2024):
+* Added Sound Effects
+* Images no longer overlap each other
+
 
 **General Purpose**
 -
@@ -32,3 +36,5 @@ Update 1 (4/17/2024):
 Example: JButton, JMenu, JFrame, JLabel
 
 * How to implement Lists within GUI's
+* How to reset image positions
+* How to add audio
