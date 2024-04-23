@@ -76,13 +76,13 @@ public class menuex {
 
         //menu button
         JButton menuButton = new JButton();
-        menuButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
         menuButton.setBounds(740, 10, 30, 30);
        
         //stuff inside menu
         JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem backgroundColor = new JMenuItem("Background Color");
-        backgroundColor.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+      
 
         JPopupMenu colorSubmenu = new JPopupMenu();
         colorSubmenu.add(new JMenuItem("Black"));
@@ -98,7 +98,7 @@ public class menuex {
        
 
         JMenuItem muteSound = new JMenuItem("Mute");
-        muteSound.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+  
         popupMenu.add(backgroundColor);
         popupMenu.add(muteSound);
         menuButton.addActionListener(new ActionListener() {
@@ -108,7 +108,8 @@ public class menuex {
            }
         });
 
-        add(menuButton);
+        frame.add(menuButton);
+        frame.setVisible(true);
     }
 }
 
