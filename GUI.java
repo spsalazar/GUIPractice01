@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -72,6 +73,12 @@ public class GUI extends JFrame {
         JButton bounceButton = new JButton("Bounce!");
         bounceButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         bounceButton.setBounds(10, 10, 90, 30);
+        bounceButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                playSound("Boing.wav");
+            }
+        });
         add(bounceButton);
 
         //remove button
@@ -107,18 +114,6 @@ public class GUI extends JFrame {
                    // Enables remove button
                    removeImageButton.setEnabled(true);
                    playSound("DogBark.wav");
-
-                   //resets image positions
-                  addButtonClicks.add(1);
-                  if (addButtonClicks.size() == 5) {
-                    addButtonClicks.clear();
-                    imagePositions.clear();
-                  }
-                  if (reloadButtonClicks.size() == 1) {
-                    reloadButtonClicks.clear();
-                    addButtonClicks.clear();
-                    imagePositions.clear();
-                  }
                   
             }
         });
@@ -143,6 +138,9 @@ public class GUI extends JFrame {
                         addImageButton.setEnabled(dogCount < 5);
                         break;
                     }
+                }
+                if (!imagePositions.isEmpty()) {
+                    imagePositions.remove(imagePositions.size() - 1);
                 }
                 revalidate();
                 repaint();
@@ -179,16 +177,10 @@ public class GUI extends JFrame {
 
     //x pos, y pos, width, height
     private void bouncingImage(JLabel image) {
-        Random random = new Random();
-        int xSpeed = 3;
-        int ySpeed = 3;
-        while (true) {
-        int x = random.nextInt(1000) + 1;
-        int y = random.nextInt(800) + 1;
-        image.setBounds(x, y, 200, 200);
-        x += xSpeed;
-        y += ySpeed;
-        }
+        Timer gameLoop = new Timer();
+        repaint();
+        gameLoop.start();
+
     }
 
     private Point randomImagePos(JLabel image) {
@@ -297,6 +289,3 @@ public class GUI extends JFrame {
 
 //randomImagePos:
 //Fix random position to stop overlapping images
-
-//Fix issue when this sequence happens:
-// Add Button is clicked 5 times, then reload button is clicked, then remove button is clicked 5 times, then add button is clicked, the prgoram crashes
